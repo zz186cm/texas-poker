@@ -114,17 +114,13 @@ export function registerSocketHandlers(socket: Socket): void {
 
   socket.on('start_game', () => {
     if (!currentRoom || !playerId) return;
-    if (currentRoom.hostId !== playerId) {
-      socket.emit('error', { message: 'Only the host can start the game' });
-      return;
-    }
-    if (!currentRoom.allReady()) {
-      socket.emit('error', { message: 'Not all players are ready' });
-      return;
-    }
-
-    currentRoom.started = true;
-    socket.to(currentRoom.code).emit('game_started', {});
+      if (currentRoom.hostId !== playerId) {
+        socket.emit('error', { message: 'Only the host can start the game' });
+        return;
+      }
+ 
+      currentRoom.started = true;
+      socket.to(currentRoom.code).emit('game_started', {});
     socket.emit('game_started', {});
 
     // Deal first hand

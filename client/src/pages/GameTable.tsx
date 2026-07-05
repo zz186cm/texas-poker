@@ -250,14 +250,14 @@ export default function GameTable({ room, myId, emit, on, onLeave }: GameTablePr
               onClick={toggleReady}
             >
               {room.players.find(p => p.id === myId)?.ready ? 'Ready!' : 'Ready'}
-            </button>
-            {amHost && (
-              <button className="btn-primary" onClick={startGame} disabled={!room.players.every(p => p.ready)}>
-                Start Game
               </button>
-            )}
-          </div>
-        )}
+              {amHost && (
+                <button className="btn-primary" onClick={startGame} disabled={room.players.length < 2}>
+                Start Game
+                </button>
+              )}
+            </div>
+          )}
 
         {/* Hand result */}
         {handResult && (
