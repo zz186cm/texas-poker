@@ -1,5 +1,6 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const DB_PATH = process.env.DB_PATH ?? path.join(process.cwd(), 'data', 'poker.db');
@@ -8,6 +9,8 @@ let db: Database.Database | null = null;
 
 export function getDb(): Database.Database {
   if (!db) {
+    // Ensure the data directory exists
+    fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
     db = new Database(DB_PATH);
     db.pragma('journal_mode = WAL');
     db.pragma('foreign_keys = ON');
