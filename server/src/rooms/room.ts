@@ -11,7 +11,7 @@ import { RoomPlayer, RoomState, SocketMap } from './room-types.js';
 import { saveRoom, deleteRoom as dbDeleteRoom, saveHandHistory } from '../db/sqlite.js';
 
 const ROOM_CODE_LENGTH = 6;
-const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no I/O/0/1 to avoid confusion
+const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // no I/O to avoid confusion, letters only
 
 function generateRoomCode(existingCodes: Set<string>): string {
   let code: string;
@@ -105,6 +105,8 @@ export class Room {
       this._emitGameState();
       this._emitHoleCards();
       this._emitPhaseChange(result);
+      // Broadcast player turn for the first player
+      this._emitTurnInfo();
     }
     return result;
   }

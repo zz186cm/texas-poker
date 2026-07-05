@@ -202,6 +202,17 @@ export default function GameTable({ room, myId, emit, on, onLeave }: GameTablePr
           ))}
         </div>
 
+        {/* Turn indicator */}
+        {gameStarted && currentPlayerId && (
+          <div className="mb-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-slate-800/80 border border-slate-600">
+            {currentPlayerId === myId ? (
+              <span className="text-yellow-400">请行动</span>
+            ) : (
+              <span className="text-slate-300">轮到 <span className="text-amber-300">{players.find(p => p.id === currentPlayerId)?.name ?? '??'}</span> 行动</span>
+            )}
+          </div>
+        )}
+
         {/* Community cards area */}
         <div className="my-6 flex flex-col items-center gap-3">
           {/* Community cards */}
