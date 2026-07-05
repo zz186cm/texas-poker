@@ -3,7 +3,7 @@ import { io, Socket } from 'socket.io-client';
 import { RoomState, GameState, Card, ShowdownResult } from '../types/game.js';
 
 export interface ServerEvents {
-  room_joined: { room: RoomState };
+  room_joined: { room: RoomState; playerId: string };
   room_updated: { players: any[]; settings: any };
   game_started: {};
   deal_hole_cards: { cards: Card[] };

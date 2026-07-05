@@ -35,8 +35,8 @@ export function registerSocketHandlers(socket: Socket): void {
 
     upsertPlayer(playerId, name, room.code);
     socket.join(room.code);
-    socket.emit('room_joined', { room: room.getState() });
-  });
+      socket.emit('room_joined', { room: room.getState(), playerId });
+    });
 
   // ── JOIN ROOM ────────────────────────────────────────
 
@@ -64,8 +64,8 @@ export function registerSocketHandlers(socket: Socket): void {
 
     upsertPlayer(playerId, name, room.code);
     socket.join(room.code);
-    socket.emit('room_joined', { room: room.getState() });
-    // Notify others
+      socket.emit('room_joined', { room: room.getState(), playerId });
+      // Notify others
     socket.to(room.code).emit('room_updated', {
       players: room.players,
       settings: room.settings,

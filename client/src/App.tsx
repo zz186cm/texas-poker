@@ -17,6 +17,7 @@ export default function App() {
 
     unsubs.push(on('room_joined', (data) => {
       setRoom(data.room);
+      setMyId(data.playerId);
       setScreen('table');
       setError('');
     }));
