@@ -143,6 +143,19 @@ export default function GameTable({ room, myId, emit, on, onLeave }: GameTablePr
   const amHost = room.players[0]?.id === myId;
   const isDealer = (idx: number) => !gameStarted ? false : idx === dealerIndex;
 
+  // Get position label for a player (庄家/小盲/大盲)
+  const getPosition = (idx: number) => {
+    if (phase === Phase.WAITING || phase === Phase.HAND_OVER) return null;
+    const total = players.length;
+    if (total < 2) return null;
+    const sbIndex = (dealerIndex + 1) % total;
+    const bbIndex = (dealerIndex + 2) % total;
+    if (idx === dealerIndex) return { label: '庄家', abbrev: 'D' };
+    if (idx === sbIndex) return { label: '小盲', abbrev: 'SB' };
+    if (idx === bbIndex) return { label: '大盲', abbrev: 'BB' };
+    return null;
+  };
+
   return (
     <div className="h-screen flex flex-col bg-gradient-to-b from-emerald-950 via-emerald-900 to-emerald-950">
       {/* Header bar */}
@@ -167,7 +180,7 @@ export default function GameTable({ room, myId, emit, on, onLeave }: GameTablePr
               className={`player-seat w-32 text-center ${currentPlayerId === p.id ? 'player-seat-active' : 'player-seat-inactive'}`}
             >
               <div className="text-xs font-semibold truncate">
-                {p.name} {isDealer(players.indexOf(p)) ? <span className="text-yellow-400">D</span> : ''}
+                {p.name} {(() => { const idx = players.indexOf(p); const pos = getPosition(idx); if (pos) return <span className={'ml-1 font-bold ' + (pos.abbrev === 'D' ? 'text-yellow-400' : 'text-cyan-400')}>{pos.label}</span>; return ''; })()}
               </div>
               {gameStarted && (
                 <>
@@ -208,7 +221,7 @@ export default function GameTable({ room, myId, emit, on, onLeave }: GameTablePr
           <div className="flex items-center justify-between mb-1">
             <span className="text-sm font-semibold">
               {myPlayer?.name ?? 'You'}
-              {myIndex >= 0 && isDealer(myIndex) && <span className="text-yellow-400 ml-1">D</span>}
+              {myIndex >= 0 && (() => { const pos = getPosition(myIndex); if (pos) return <span className={'ml-1 font-bold ' + (pos.abbrev === 'D' ? 'text-yellow-400' : 'text-cyan-400')}>{pos.label}</span>; return ''; })()}
             </span>
             <span className="chip-stack">{myChips}</span>
           </div>
