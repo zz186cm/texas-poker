@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+*.db
+*.db-shm
+*.db-wal
+lt_output.txt
+lt_error.txt
+tunnel_output.txt
+tunnel_error.txt
+tunnel.mjs
+ngrok-tunnel.mjs
+package-lock.json

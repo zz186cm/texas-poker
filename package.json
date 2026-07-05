@@ -1,0 +1,9 @@
+{
+  "name": "texas-poker",
+  "private": true,
+  "scripts": {
+    "build": "cd server && npm run build && cd ../client && npm install && npm run build",
+    "start": "cd server && node dist/index.js",
+    "postinstall": "cd server && npm install && cd ../client && npm install"
+  }
+}
